@@ -1,0 +1,42 @@
+version: "3.8"
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4jnew
+    ports:
+      - "7999:7687"
+      - "7888:7474"
+    volumes:
+      - ./data/neo4j/data:/data
+      - ./data/neo4j/logs:/logs
+      - ./data/neo4j/import:/var/lib/neo4j/import
+      - ./data/neo4j/plugins:/plugins
+    environment:
+      - NEO4J_AUTH=neo4j/password
+
+  mongodb:
+    container_name: mongo_db
+    image: mongo
+    volumes:
+      - /home/uminho/dockers/data/mongodb/:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - mongodbnet
+    restart: always
+
+  oracle-xe:
+    container_name: oracle-xe
+    image: gvenzl/oracle-xe
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=pass
+    restart: always
+
+networks:
+  mongodbnet:
+    driver: bridge
+
+  default:
+    driver: bridge
